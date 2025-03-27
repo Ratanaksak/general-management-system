@@ -26,7 +26,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-pac9)a*z*8az(o^p6ptx8
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
-
+CORS_ORIGIN_WHITELIST = [
+    'https://general-management-system-production.up.railway.app',
+]
 
 # Application definition
 
@@ -129,3 +131,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',  # Your Railway domain
+    'https://general-management-system-production.up.railway.app'  # Any custom domain
+]
