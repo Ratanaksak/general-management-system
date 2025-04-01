@@ -1,0 +1,319 @@
+
+{% load static %}
+
+{% block content %}
+<div class="currency-converter-container">
+    <div class="converter-card">
+        <div class="converter-header">
+            <h2><i class="fas fa-exchange-alt"></i> KHR-USD Converter</h2>
+            <div class="current-rates">
+                <span>1 USD = {{ usd_rate|floatformat:2 }} KHR</span>
+                <span>1 KHR = {{ khr_rate|floatformat:6 }} USD</span>
+            </div>
+        </div>
+
+        <form method="POST" class="converter-form">
+            {% csrf_token %}
+            
+            <div class="form-group amount-group">
+                <label for="id_amount">Amount</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                    {{ form.amount }}
+                </div>
+            </div>
+
+            <div class="currency-selectors">
+                <div class="form-group">
+                    <label for="id_from_currency">From</label>
+                    <div class="select-with-icon">
+                        <i class="fas fa-arrow-down"></i>
+                        {{ form.from_currency }}
+                    </div>
+                </div>
+
+                <button type="button" class="swap-currencies" title="Swap currencies">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+
+                <div class="form-group">
+                    <label for="id_to_currency">To</label>
+                    <div class="select-with-icon">
+                        <i class="fas fa-arrow-up"></i>
+                        {{ form.to_currency }}
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="convert-btn">
+                <i class="fas fa-calculator"></i> Convert
+            </button>
+        </form>
+
+        {% if result %}
+        <div class="conversion-result">
+            <div class="result-box">
+                <h3>Conversion Result</h3>
+                <div class="result-amount">
+                    {{ form.cleaned_data.amount }} {{ form.cleaned_data.from_currency }} =
+                    <span>{{ result|floatformat:2 }}</span> {{ form.cleaned_data.to_currency }}
+                </div>
+                <div class="rate-info">
+                    Rate: 1 {{ form.cleaned_data.from_currency }} = 
+                    {% if form.cleaned_data.from_currency == 'USD' %}
+                        {{ usd_rate|floatformat:2 }} KHR
+                    {% else %}
+                        {{ khr_rate|floatformat:6 }} USD
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="disclaimer">
+        <p><i class="fas fa-info-circle"></i> Rates are for reference only. Last updated: {{ last_updated|date:"M d, Y H:i" }}</p>
+    </div>
+</div>
+
+<style>
+    /* Base Styles */
+    .currency-converter-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .converter-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .converter-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1rem;
+    }
+
+    .converter-header h2 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .current-rates {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+
+    /* Form Styles */
+    .converter-form {
+        margin-top: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .input-with-icon, .select-with-icon {
+        position: relative;
+    }
+
+    .input-with-icon i, .select-with-icon i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7f8c8d;
+    }
+
+    .converter-form input, .converter-form select {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .converter-form input:focus, .converter-form select:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        outline: none;
+    }
+
+    .converter-form select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 1em;
+    }
+
+    /* Currency Selector Row */
+    .currency-selectors {
+        display: flex;
+        align-items: flex-end;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .currency-selectors .form-group {
+        flex: 1;
+        margin-bottom: 0;
+    }
+
+    .swap-currencies {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-bottom: 0.8rem;
+    }
+
+    .swap-currencies:hover {
+        background: #e9ecef;
+        transform: rotate(180deg);
+    }
+
+    /* Convert Button */
+    .convert-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .convert-btn:hover {
+        background: linear-gradient(135deg, #2980b9, #1a252f);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Result Section */
+    .conversion-result {
+        margin-top: 2rem;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .result-box {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .result-box h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+    }
+
+    .result-amount {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .result-amount span {
+        color: #27ae60;
+    }
+
+    .rate-info {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+        margin-top: 1.5rem;
+        text-align: center;
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 576px) {
+        .currency-selectors {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .swap-currencies {
+            transform: rotate(90deg);
+            margin: 0 auto;
+        }
+        
+        .swap-currencies:hover {
+            transform: rotate(270deg);
+        }
+        
+        .current-rates {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Swap currencies functionality
+        const swapBtn = document.querySelector('.swap-currencies');
+        const fromCurrency = document.querySelector('#id_from_currency');
+        const toCurrency = document.querySelector('#id_to_currency');
+        
+        swapBtn.addEventListener('click', function() {
+            const temp = fromCurrency.value;
+            fromCurrency.value = toCurrency.value;
+            toCurrency.value = temp;
+        });
+        
+        // Auto-focus amount field on page load
+        document.querySelector('#id_amount').focus();
+    });
+</script>
+{% endblock %}
