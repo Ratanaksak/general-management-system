@@ -79,8 +79,8 @@
 <style>
     /* Base Styles */
     .currency-converter-container {
-        max-width: 600px;
-        margin: 2rem auto;
+        max-width: 900px;
+        margin: 3rem auto;
         padding: 0 1rem;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
@@ -89,7 +89,7 @@
         background: white;
         border-radius: 12px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
+        padding: 8rem;
         transition: all 0.3s ease;
     }
 
@@ -269,7 +269,174 @@
         justify-content: center;
         gap: 0.5rem;
     }
+    .converter-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 1rem;
+        background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    }
 
+    .converter-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* Card Styling */
+    .converter-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Header */
+    .converter-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .converter-header h2 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .current-rates {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        flex-wrap: wrap;
+    }
+
+    /* Form Elements */
+    .converter-form {
+        margin-top: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .amount-group {
+        width: 100%;
+    }
+
+    .currency-selectors {
+        display: flex;
+        align-items: flex-end;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Input Fields */
+    .input-with-icon, .select-with-icon {
+        position: relative;
+    }
+
+    .input-with-icon i, .select-with-icon i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7f8c8d;
+        font-size: 1rem;
+    }
+
+    .converter-form input, .converter-form select {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    /* Buttons */
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .convert-btn {
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #512da8, #5c6bc0);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(92, 107, 192, 0.3);
+    }
+
+    .swap-currencies {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-bottom: 0.8rem;
+    }
+
+    /* Result Section */
+    .conversion-result {
+        margin-top: 2rem;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .result-box {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    /* Read More Button */
+    .more-features {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+
+    .read-more-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: transparent;
+        color: #512da8;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        border: 2px solid #512da8;
+    }
+
+    .read-more-btn:hover {
+        background-color: #512da8;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(81, 45, 168, 0.2);
+    }
     /* Animations */
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
@@ -295,6 +462,44 @@
         .current-rates {
             flex-direction: column;
             gap: 0.5rem;
+        }
+    }
+    @media (max-width: 576px) {
+        .converter-card {
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+        
+        .currency-selectors {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .swap-currencies {
+            align-self: center;
+            transform: rotate(90deg);
+            margin: 0.5rem 0;
+        }
+        
+        .current-rates {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .converter-form input, 
+        .converter-form select {
+            padding: 10px 15px 10px 35px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .converter-card {
+            padding: 1.25rem;
+        }
+        
+        .convert-btn {
+            padding: 10px 25px;
+            font-size: 0.9rem;
         }
     }
 </style>
