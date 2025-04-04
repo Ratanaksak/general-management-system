@@ -132,10 +132,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # For development
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# For temporary file storage (create the directory if it doesn't exist)
+TEMP_DIR = os.path.join(MEDIA_ROOT, 'temp_files')
+os.makedirs(TEMP_DIR, exist_ok=True)
 # Add this to your settings.py
 POPPLER_PATH = r'C:\Program Files\poppler-24.08.0\Library\bin'  # Update with your actual path
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-os.makedirs(os.path.join(MEDIA_ROOT, 'temp_files'), exist_ok=True)
+if os.name == 'nt':  # Windows
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    POPPLER_PATH = r'C:\path\to\poppler-xx\bin'  # Change to your Poppler path
+else:  # Linux/Unix (including Railway)
+    pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+    POPPLER_PATH = '/usr/bin'  # Default Linux path
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
