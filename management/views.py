@@ -5,13 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from .forms import RegisterForm, LoginForm
 from django.shortcuts import render, HttpResponse
-from .forms import FileUploadForm
-from .utils.converter import convert_pdf_to_word, convert_image_to_word
-from django.conf import settings
-import os
-from datetime import datetime
-import logging
-from django.http import JsonResponse
+
 
 
 
