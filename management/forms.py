@@ -59,3 +59,14 @@ class LoginForm(AuthenticationForm):
         }),
         label=''
     )
+
+class FileUploadForm(forms.Form):
+    file = forms.FileField(
+        label='Select a PDF or Image',
+        widget=forms.FileInput(attrs={'accept': '.pdf,.jpg,.jpeg,.png'})
+    )
+    output_format = forms.ChoiceField(
+        choices=[('docx', 'Microsoft Word')],
+        initial='docx',
+        widget=forms.RadioSelect
+    )
