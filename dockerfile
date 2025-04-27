@@ -1,14 +1,16 @@
 FROM python:3.9-slim
 
 # Install system dependencies required for building packages like scipy
+# Install dependencies required for building SciPy
 RUN apt-get update && apt-get install -y \
     build-essential \
     gfortran \
-    python3-dev \
-    libblas-dev \
-    liblapack-dev \
     libatlas-base-dev \
+    pkg-config \
+    libfreetype6-dev \
+    libxft-dev \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Set up a virtual environment and install dependencies
 RUN python -m venv /opt/venv
