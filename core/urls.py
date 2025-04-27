@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('management.urls')),
     path('currency/', include('currency.urls')),
+    path('main/', include('main.urls')),  # ← Add this
     
 ]

@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'management',
     'currency',
+    'main',
+    'import_export',
+    'django.contrib.humanize',
     
     
 ]
@@ -153,3 +156,4 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',  # Your Railway domain
     'https://general-management-system-production.up.railway.app'  # Any custom domain
 ]
+
