@@ -28,4 +28,4 @@ COPY . .
 EXPOSE 8000
 
 # Command to start the Django app (can be replaced with gunicorn for production)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "core.wsgi:application"]
