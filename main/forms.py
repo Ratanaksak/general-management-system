@@ -29,3 +29,5 @@ class PersonForm(forms.ModelForm):
             'commune': 'Commune',
             'village': 'Village',
         }
+
+

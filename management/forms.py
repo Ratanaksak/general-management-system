@@ -60,3 +60,6 @@ class LoginForm(AuthenticationForm):
         label=''
     )
 
+class VideoDownloadForm(forms.Form):
+    url = forms.URLField(label='Video URL', required=True)
+    format = forms.ChoiceField(label='Format', choices=[('mp4', 'MP4'), ('mp3', 'MP3')])

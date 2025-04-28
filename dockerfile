@@ -1,29 +1,14 @@
-FROM python:3.9-slim
+FROM python:3.11-slim  # Use a supported Python version (3.11 or 3.12)
 
-# Install system dependencies required for building packages like scipy
-# Install dependencies required for building SciPy
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gfortran \
-    libatlas-base-dev \
-    pkg-config \
-    libfreetype6-dev \
-    libxft-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-
-# Set up a virtual environment and install dependencies
-RUN python -m venv /opt/venv
-RUN /opt/venv/bin/pip install --upgrade pip
-COPY requirements.txt .
-RUN /opt/venv/bin/pip install -r requirements.txt
-
-# Set the working directory to /app
+# Install build dependencies (including gfortran)
+RUN apt-get update && \
+    apt-get install -y gfortran build-essential && \
+    rm -rf /var/lib/apt/lists/*
+# Install ffmpeg
+RUN apt-get update && apt-get install -y ffmpeg
 WORKDIR /app
-COPY . /app/
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port that the app will run on (usually 8000 for Django)
-EXPOSE 8000
-
-# Start the app
-CMD ["gunicorn", "myapp.wsgi:application", "--bind", "0.0.0.0:8000"]
+COPY . .
+CMD ["python", "manage.py"]  # Replace with your startup command

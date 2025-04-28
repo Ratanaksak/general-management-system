@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .views import register_view, login_view
 from django.contrib.auth.decorators import login_required
 from .views import home_view, protected_view
+from .views import download_video
 
 urlpatterns = [
     path('', home_view, name='home'),
@@ -15,5 +16,6 @@ urlpatterns = [
     path('departments/', views.department_list, name='department_list'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('download/', download_video, name='download_video'),
     
 ]
